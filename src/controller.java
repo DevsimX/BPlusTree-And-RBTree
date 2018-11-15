@@ -3,11 +3,7 @@
  */
 
 import java.io.*;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -17,10 +13,10 @@ public class controller{
     private BplusTree<String , String> bPlusTree = new BplusTree<>(4);
 
     @FXML // fx:id="label"
-    private Label label;
+    private Label label; // Value injected by FXMLLoader
 
     @FXML // fx:id="showAll"
-    private Button showAll;
+    private Button showAll; // Value injected by FXMLLoader
 
     @FXML // fx:id="path"
     private TextField path; // Value injected by FXMLLoader
@@ -61,7 +57,8 @@ public class controller{
     @FXML // fx:id="rangeSearch"
     private Button rangeSearch; // Value injected by FXMLLoader
 
-    @FXML void submit(){
+    @FXML
+    void submit(){
         submit.setOnAction(e ->{
             String filePath = path.getText();
 
@@ -75,6 +72,7 @@ public class controller{
                 label.setText("No such file");
         });
     }
+    //Called to implement read the file and implement the according operation
 
     @FXML
     private void initial(){
@@ -141,6 +139,7 @@ public class controller{
             }
         }
     }
+    //Initial the tree
     @FXML
     private void delete(){
         File file = new File("./src/2_delete.txt");
@@ -182,6 +181,8 @@ public class controller{
             label.setText("Delete successfully");
         }
     }
+    //Delete some data
+
     @FXML
     private void insert(){
         File file = new File("./src/3_insert.txt");
@@ -224,6 +225,7 @@ public class controller{
             label.setText("Insert successfully");
         }
     }
+    //Insert some data
 
     @FXML
     void showAll(){

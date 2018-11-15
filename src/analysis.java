@@ -20,26 +20,15 @@ public class analysis {
     public static void main(String[] args){
         RB_insert_test();
         BPlus_insert_test();
-//        System.out.println(getSearch(rb_tree));
-//        System.out.println(getSearch(bPlusTree));
         RB_delete_test();
         BPlus_delete_test();
-//        System.out.println(getSearch(rb_tree));
-//        System.out.println(getSearch(bPlusTree));
         RB_add_test();
         BPlus_add_test();
-//        System.out.println(getSearch(rb_tree));
-//        System.out.println(getSearch(bPlusTree));
         RB_query_test();
         BPlus_query_test();
         RB_queries_test("cat" , "ant");
         BPlus_queries_test("ant" , "cat");
         printTime();
-        System.out.println(397281+ 266519 +281194+ 267488+ 281859 +276708 +262663+ 876271+ 365799 +328734);
-        System.out.println(1233428+5741489+1025601+ 483950+ 1700181 +397877+ 371514+ 371208+ 480314 +483442);
-        System.out.println(278392 +262085 +242267+ 599984 +261429+ 250157 +247433 +449901+ 255661 +248843);
-        System.out.println(479920+ 382682 +374273+ 3043674 +367715+ 349641 +344240+ 525397+ 1975640+ 348674);
-        System.out.println();
     }
 
     //The RB tree's insert test function , insert the data of 1_initial.txt
@@ -64,7 +53,7 @@ public class analysis {
                     afterTime = System.nanoTime();
                     time1.add(afterTime - beforeTime);
                     //Add the time of insert into the arrayList time1
-                    if(line <= 1000){
+                    if(rb_tree.size <= 500){
                         System.out.println("RBTree's preOrderPrint:");
                         rb_tree.preOrderPrint(rb_tree);
                         System.out.println("The tree's current line is " + line/2);
@@ -102,7 +91,7 @@ public class analysis {
                     afterTime = System.nanoTime();
                     time2.add(afterTime - beforeTime);
                     //Add the time of insert into the arrayList time2
-                    if(line <= 1000){
+                    if(bPlusTree.getSize() <= 500){
                         System.out.println("BPlusTree's preOrderPrint:");
                         bPlusTree.preOrderPrint(bPlusTree);
                         System.out.println("The tree's current line is " + line/2);
@@ -141,10 +130,11 @@ public class analysis {
                     afterTime = System.nanoTime();
                     time3.add(afterTime - beforeTime);
                     //Add the time of insert into the arrayList time3
-//                    System.out.println("RBTree's delete operation: ");
-//                    rb_tree.preOrderPrint(rb_tree);
-//                    System.out.println("Before delete the tree's line is " + (rb_tree.size + 100) + " and current line is " + rb_tree.size);
-
+                    if(rb_tree.size <= 500){
+                        System.out.println("RBTree's delete operation: ");
+                        rb_tree.preOrderPrint(rb_tree);
+                        System.out.println("Before delete the tree's line is " + (rb_tree.size + 100) + " and current line is " + rb_tree.size);
+                    }
                     beforeTime = System.nanoTime();
                     //Update the beforeTime
                 }//Print the result after the deletion
@@ -177,7 +167,11 @@ public class analysis {
                     afterTime = System.nanoTime();
                     time4.add(afterTime - beforeTime);
                     //Add the time of insert into the arrayList time4
-
+                    if(bPlusTree.getSize() <= 500){
+                        System.out.println("RBTree's delete operation: ");
+                        bPlusTree.preOrderPrint(bPlusTree);
+                        System.out.println("Before delete the tree's line is " + (rb_tree.size + 100) + " and current line is " + rb_tree.size);
+                    }
                     beforeTime = System.nanoTime();
                     //Update the beforeTime
                 }//Print the result after the deletion
@@ -211,6 +205,11 @@ public class analysis {
                     afterTime = System.nanoTime();
                     time5.add(afterTime - beforeTime);
                     //Add the time of insert into the arrayList time5
+                    if(rb_tree.size <= 500){
+                        System.out.println("RBTree's delete operation: ");
+                        rb_tree.preOrderPrint(rb_tree);
+                        System.out.println("Before delete the tree's line is " + (rb_tree.size + 100) + " and current line is " + rb_tree.size);
+                    }
                     beforeTime = System.nanoTime();
                     //Update the beforeTime
                 }//Print the result after the insertion
@@ -243,7 +242,11 @@ public class analysis {
                     afterTime = System.nanoTime();
                     time6.add(afterTime - beforeTime);
                     //Add the time of insert into the arrayList time6
-
+                    if(bPlusTree.getSize() <= 500){
+                        System.out.println("RBTree's delete operation: ");
+                        bPlusTree.preOrderPrint(bPlusTree);
+                        System.out.println("Before delete the tree's line is " + (rb_tree.size + 100) + " and current line is " + rb_tree.size);
+                    }
                     beforeTime = System.nanoTime();
                     //Update the beforeTime
                 }//Print the result after the insertion
@@ -363,35 +366,18 @@ public class analysis {
     }
 
     private static void BPlus_queries_test(BplusNode<String , String> x , String key1 , String key2){
-
         if(x.isLeaf){
             for(int i = 0 ; i < x.entries.size() ; i++){
                 if(x.entries.get(i).getKey().compareTo(key1) >= 0 && x.entries.get(i).getKey().compareTo(key2) <= 0){
                     System.out.println("English: " + x.entries.get(i).getKey() + " Chinese: " + x.entries.get(i).getValue());
                 }
             }
+            if(x.next != null){
+                BPlus_queries_test(x.next,key1,key2);
+            }
         }else {
-            for(int i = 0 ; i < x.children.size() ; i++){
-                BPlus_queries_test(x.children.get(i) , key1 , key2);
-            }
+            BPlus_queries_test(x.children.get(0) , key1 , key2);
         }
-    }
-    //The function to get the line number of the specific files
-    private static int lineNumber(String fileName){
-        int line = 0;
-
-        try{
-            FileReader fr = new FileReader(fileName);
-            BufferedReader br = new BufferedReader(fr);
-            while(br.readLine() != null){
-                line++;
-            }
-            fr.close();
-            br.close();
-        }catch (IOException ioe){
-            ioe.printStackTrace();
-        }
-        return line;
     }
 
     //The function is to print all the operation's cost time
@@ -479,64 +465,5 @@ public class analysis {
             System.out.print(Time10 + " ");
         }
         System.out.println();
-    }
-
-    private static int getSearch(RB_Tree rb_tree){
-        ArrayList<String> arrayList = new ArrayList<>();
-        int index = 0;
-        String thePath = "./src/1_initial.txt";
-        try{
-            String key,value;
-            FileReader fr = new FileReader(thePath);
-            BufferedReader br = new BufferedReader(fr);
-            br.readLine();
-            //Read the first line , to read the data behind it.
-            while((key=br.readLine()) != null && (value=br.readLine()) != null){
-                //Read two data each time
-                if(!arrayList.contains(key)){
-                    arrayList.add(key);
-                }
-            }
-            fr.close();
-            br.close();
-        }catch (IOException ioe){
-            ioe.printStackTrace();
-        }
-        for(int i = 0 ; i < arrayList.size() ; i++){
-            if(rb_tree.checkExist(arrayList.get(i))){
-                index++;
-            }
-        }
-        return index;
-    }
-
-    private static int getSearch(BplusTree<String,String> bPlusTree){
-        ArrayList<String> arrayList = new ArrayList<>();
-        int index = 0;
-        String thePath = "./src/1_initial.txt";
-        try{
-            String key,value;
-            FileReader fr = new FileReader(thePath);
-            BufferedReader br = new BufferedReader(fr);
-            br.readLine();
-            //Read the first line , to read the data behind it.
-
-            while((key=br.readLine()) != null && (value=br.readLine()) != null){
-                //Read two data each time
-                if(!arrayList.contains(key)){
-                    arrayList.add(key);
-                }
-            }
-            fr.close();
-            br.close();
-        }catch (IOException ioe){
-            ioe.printStackTrace();
-        }
-        for(int i = 0 ; i < arrayList.size() ; i++){
-            if(bPlusTree.get(arrayList.get(i)) != null){
-                index++;
-            }
-        }
-        return index;
     }
 }

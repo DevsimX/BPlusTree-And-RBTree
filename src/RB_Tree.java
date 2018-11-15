@@ -1,13 +1,17 @@
 public class RB_Tree {
     RB_Node rootNode;
     RB_Node nilNode;
+    long size = 0;
+    //Use to store the data and put out in the UI
     private String out = "";
 
+    //RB_Tree's construct function
     RB_Tree(){
         nilNode = new RB_Node();
         rootNode = nilNode;
     }
 
+    //RB_Tree's basic functions from the line 14 to line 299
     private void leftRotate(RB_Tree T , RB_Node x){
         RB_Node y = x.rightNode;
 
@@ -92,6 +96,8 @@ public class RB_Tree {
         z.color = true;
 
         fixUp(T,z);
+
+        size++;
     }
 
     private void fixUp(RB_Tree T , RB_Node z){
@@ -190,6 +196,7 @@ public class RB_Tree {
         }
         if(!originalColor)
             deleteFixUp(T,x);
+        size--;
     }
 
     private void deleteFixUp(RB_Tree T , RB_Node x){
@@ -294,17 +301,12 @@ public class RB_Tree {
         v.parentNode = u.parentNode;
     }
 
-    void instructTree(int[] array , RB_Tree tree){
-        for (int x:array
-             ) {
-            insert(tree , new RB_Node(x+""));
-        }
-    }
-
+    //Traversal the RB_Tree by using the preOrder and print the result on the console
     void preOrderPrint(RB_Tree tree){
         preOrderPrint(tree.rootNode , 0 , 0);
     }
 
+    //Reload function , recurrently call the function to implement preOrder
     private void preOrderPrint(RB_Node x , int level , int direction){
         if(x != null && x!= nilNode){
             System.out.println("level=" + level++ + " child=" + direction + " " + x.key + " " + x.value + "(" + getColor(x.color) + ")");
@@ -316,6 +318,8 @@ public class RB_Tree {
             System.out.println("level=" + level + " child=" + direction + " null");
         }
     }
+
+    //Change the boolean to String
     private String getColor(Boolean color){
         if(!color){
             return "BLACK";
@@ -334,15 +338,19 @@ public class RB_Tree {
         return x;
     }
 
+    //Check whether the key exist in the RB_Tree
     Boolean checkExist(String key){
         return search(rootNode, key) != null && search(rootNode, key) != nilNode;
     }
 
+    //Same as the preOrder , but put the result in the variable out and use the variable to implement the UI.
     String getTree(){
+        out = "";
         recurrent(rootNode , 0 , 0);
         return this.out;
     }
 
+    //The getTree's recurrent function , same as the reload preOrderPrint function
     private void recurrent(RB_Node x , int level , int direction){
         if(x != null && x!= nilNode){
             out += "level=" + level++ + " child=" + direction + " " + x.key + " " + x.value + "(" + getColor(x.color) + ")" + "\n";
@@ -350,19 +358,22 @@ public class RB_Tree {
             recurrent(x.leftNode , level , 0);
 
             recurrent(x.rightNode , level , 1);
-        }else {
-            out += "level=" + level + " child=" + direction + " null" + "\n";
         }
     }
 
+    //Implement the range search feature
     String rangeSearch(String key1 , String key2){
         return rangeSearch(rootNode , key1 , key2);
     }
 
+    //The rangeSearch's recurrent function
     private String rangeSearch(RB_Node x , String key1 , String key2){
         if(x != null && x != nilNode){
             String string1 = rangeSearch(x.leftNode , key1 , key2);
             String string2 = "";
+            if(x.key.compareTo(key2) > 0){
+                return string1 + string2;
+            }
             if(x.key.compareTo(key1) >= 0 && x.key.compareTo(key2) <= 0){
                 string2 += "English: " + x.key + " Chinese: " + x.value + "\n";
             }

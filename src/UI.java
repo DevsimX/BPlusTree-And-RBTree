@@ -3,10 +3,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+//Just a easy UI file , the Untitled.fxml is key.
 public class UI extends Application{
     @Override
     public void start(Stage primaryStage){
         try{
+            //Load the Untitled.fxml
             Parent fxml = FXMLLoader.load(getClass().getResource("Untitled.fxml"));
             Scene scene = new Scene(fxml,1020,320);
             primaryStage.setTitle("English-Chinese Dictionary");
@@ -20,8 +23,6 @@ public class UI extends Application{
     }
 
     public static void main(String[] args){
-//        controller controller = new controller();
-//        controller.Controller(new RB_Tree() , new BplusTree<String, String>(4));
         Application.launch(args);
     }
 }
